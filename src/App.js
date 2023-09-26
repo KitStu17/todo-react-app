@@ -14,24 +14,25 @@ class App extends React.Component {
   }
 
   // Todo에 대한 CRUD 이후 갱신된 리스트 출력을 위해 코드 일부 변경
+  // 백엔드 코드 변경을 통해 다시 교재의 코드로 변경
   add = (item) => {
-    call("/todo", "POST", item).then((response) =>
-      // this.setState({ items: response.data })
-      this.retrieve()
+    call("/todo", "POST", item).then(
+      (response) => this.setState({ items: response.data })
+      // this.retrieve()
     );
   };
 
   delete = (item) => {
-    call("/todo", "DELETE", item).then((response) =>
-      // this.setState({ items: response.data })
-      this.retrieve()
+    call("/todo", "DELETE", item).then(
+      (response) => this.setState({ items: response.data })
+      // this.retrieve()
     );
   };
 
   update = (item) => {
-    call("/todo", "PUT", item).then((response) =>
-      // this.setState({ items: response.data })
-      this.retrieve()
+    call("/todo", "PUT", item).then(
+      (response) => this.setState({ items: response.data })
+      // this.retrieve()
     );
   };
 
