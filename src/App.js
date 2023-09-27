@@ -3,7 +3,8 @@ import Todo from "./Todo";
 import AddTodo from "./AddTodo";
 import { call } from "./service/ApiService";
 import React, { useState, useEffect } from "react";
-import { Paper, List, Container } from "@material-ui/core";
+import { Paper, List, Container, Button } from "@material-ui/core";
+import Delete from "@material-ui/icons/Delete";
 
 function App() {
   const [items, setItems] = useState([]);
@@ -33,7 +34,7 @@ function App() {
 
   useEffect(() => {
     // 추후 일괄 삭제 기능 추가를 위한 기능
-    // 사용자가 선택한 목록이 checked에 추가된다.
+    // items가 변경될 때마다 사용자가 선택한 목록이 checked에 추가된다.
     if (items.length > 0) {
       const thisItems = [...items];
       var newItems = [];
@@ -68,6 +69,11 @@ function App() {
         <AddTodo addTodo={addTodo} />
       </Container>
       <div className="TodoList">{todoItems}</div>
+      <div>
+        <Button variant="outlined" color="inherit" startIcon={<Delete />}>
+          선택 항목 삭제
+        </Button>
+      </div>
     </div>
   );
 }
