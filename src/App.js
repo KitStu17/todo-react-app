@@ -2,78 +2,74 @@ import "./App.css";
 import Todo from "./Todo";
 import AddTodo from "./AddTodo";
 import { call } from "./service/ApiService";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Paper, List, Container } from "@material-ui/core";
 
-class App extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      items: [],
-    };
-  }
+function App() {
+  const [items, setItems] = useState([]);
+  const [checked, setChecked] = useState([]);
 
-  // Todo에 대한 CRUD 이후 갱신된 리스트 출력을 위해 코드 일부 변경
-  // 백엔드 코드 변경을 통해 다시 교재의 코드로 변경
-  add = (item) => {
-    call("/todo", "POST", item).then(
-      (response) => this.setState({ items: response.data })
-      // this.retrieve()
-    );
+  const addTodo = (item) => {
+    // 목록 추가
+    call("/todo", "POST", item).then((response) => setItems(response.data));
   };
 
-  delete = (item) => {
-    call("/todo", "DELETE", item).then(
-      (response) => this.setState({ items: response.data })
-      // this.retrieve()
-    );
+  const deleteTodo = (item) => {
+    // 목록 삭제
+    call("/todo", "DELETE", item).then((response) => setItems(response.data));
   };
 
-  update = (item) => {
-    call("/todo", "PUT", item).then(
-      (response) => this.setState({ items: response.data })
-      // this.retrieve()
-    );
+  const updateTodo = (item) => {
+    // 목록 갱신
+    call("/todo", "PUT", item).then((response) => setItems(response.data));
   };
 
-  retrieve = () => {
-    call("/todo", "GET", null).then((response) =>
-      this.setState({ items: response.data })
-    );
-  };
+  useEffect(() => {
+    // 페이지가 마운트 될 때 목록을 DB에서 가져옴
+    call("/todo", "GET", null).then((response) => {
+      setItems(response.data);
+    });
+  }, []);
 
-  componentDidMount() {
-    // call("/todo", "GET", null).then((response) =>
-    //   this.setState({ items: response.data })
-    // );
-    this.retrieve();
-  }
+  useEffect(() => {
+    // 추후 일괄 삭제 기능 추가를 위한 기능
+    // 사용자가 선택한 목록이 checked에 추가된다.
+    if (items.length > 0) {
+      const thisItems = [...items];
+      var newItems = [];
+      thisItems.forEach((todo) => {
+        if (todo.done === true) {
+          newItems.push(todo);
+        }
+      });
+      setChecked(newItems);
+      console.log(newItems);
+    }
+  }, [items]);
 
-  render() {
-    var todoItems = this.state.items.length > 0 && (
-      <Paper style={{ margin: 16 }}>
-        <List>
-          {this.state.items.map((item, idx) => (
-            <Todo
-              item={item}
-              key={item.id}
-              delete={this.delete}
-              update={this.update}
-            />
-          ))}
-        </List>
-      </Paper>
-    );
+  var todoItems = items.length > 0 && (
+    <Paper style={{ margin: 16 }}>
+      <List>
+        {items.map((item, idx) => (
+          <Todo
+            item={item}
+            key={item.id}
+            deleteTodo={deleteTodo}
+            updateTodo={updateTodo}
+          />
+        ))}
+      </List>
+    </Paper>
+  );
 
-    return (
-      <div className="App">
-        <Container maxWidth="md">
-          <AddTodo add={this.add} />
-        </Container>
-        <div className="TodoList">{todoItems}</div>
-      </div>
-    );
-  }
+  return (
+    <div className="App">
+      <Container maxWidth="md">
+        <AddTodo addTodo={addTodo} />
+      </Container>
+      <div className="TodoList">{todoItems}</div>
+    </div>
+  );
 }
 
 export default App;
