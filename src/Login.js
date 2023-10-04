@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { signin } from "./service/ApiService";
 import {
   Button,
@@ -9,7 +8,7 @@ import {
   Typography,
 } from "@material-ui/core";
 
-function Login(props) {
+function Login() {
   const handleSubmit = (event) => {
     event.preventDefault();
 

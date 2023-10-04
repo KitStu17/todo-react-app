@@ -18,7 +18,7 @@ function Copyright() {
   );
 }
 
-export function AppRouter() {
+function AppRouter() {
   return (
     <BrowserRouter>
       <div>
@@ -36,3 +36,5 @@ export function AppRouter() {
     </BrowserRouter>
   );
 }
+
+export default AppRouter;
