@@ -31,9 +31,9 @@ export function call(api, method, request) {
       })
     )
     .catch((error) => {
-      console.log("Oops! Something went wrong");
+      // console.log("Oops! Something went wrong");
       console.log(error.status);
-      console.log("Ooops! Something went wrong");
+      // console.log("Ooops! Something went wrong");
       if (error.status === 403) {
         window.location.href = "/login";
       }
@@ -61,9 +61,9 @@ export function signup(userDTO) {
       }
     })
     .catch((error) => {
-      console.log("Oops! Something went wrong");
+      // console.log("Oops! Something went wrong");
       console.log(error.status);
-      console.log("Ooops! Something went wrong");
+      // console.log("Ooops! Something went wrong");
       if (error.status === 403) {
         window.location.href = "/auth/signup";
       }
@@ -76,4 +76,33 @@ export function signout() {
   // localstorage의 토큰 삭제
   localStorage.setItem(ACCESS_TOKEN, null);
   window.location.href = "/";
+}
+
+// 메일로 인증코드 보내기
+export function sendEmail(email) {
+  // POST localhost:8080/mail/send
+  return call("/mail/send", "POST", { email: email })
+    .then((response) => {
+      alert("메일로 전송했습니다. 메일함을 확인해주세요. \n");
+    })
+    .catch((error) => {
+      alert("메일 보내기에 실패했습니다.");
+      console.log(error);
+    });
+}
+
+// 인증코드 검증하기
+export function checkCertificateCode(code) {
+  // POST localhost:8080/mail/check
+  return call("/mail/check", "POST", { code: code })
+    .then((response) => {
+      console.log(response, "인증코드 확인 성공");
+      alert("인증에 성공하였습니다.");
+    })
+    .catch((error) => {
+      console.log(error.status);
+      if (error.status === 400) {
+        alert("인증코드 검증이 실패했습니다.");
+      }
+    });
 }

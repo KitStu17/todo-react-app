@@ -7,8 +7,10 @@ import {
   Container,
   Typography,
 } from "@material-ui/core";
+import { useState } from "react";
 
 function Login() {
+  const [errorMsg, setErrorMsg] = useState("");
   const handleSubmit = (event) => {
     event.preventDefault();
 
@@ -17,7 +19,9 @@ function Login() {
     const password = data.get("password");
 
     // ApiService의 signin 메소드로 login
-    signin({ email: email, password: password });
+    signin({ email: email, password: password }).catch((error) => {
+      setErrorMsg("로그인에 실패하셨습니다. 비밀번호를 다시 입력해 주세요.");
+    });
   };
 
   return (
@@ -61,6 +65,9 @@ function Login() {
           <Link href="/signup" variant="body2">
             <Grid item>계정이 없습니까? 여기서 가입하세요.</Grid>
           </Link>
+          <Grid item xs={12} style={{ color: "#FF0000" }}>
+            {errorMsg}
+          </Grid>
         </Grid>
       </form>
     </Container>

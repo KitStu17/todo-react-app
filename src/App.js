@@ -31,6 +31,14 @@ function App() {
     call("/todo", "DELETE", item).then((response) => setItems(response.data));
   };
 
+  const deleteListTodo = () => {
+    // 선택된 목록 일괄 삭제
+    const delList = [...checked];
+    call("/todo/deleteList", "DELETE", delList).then((response) => {
+      setItems(response.data);
+    });
+  };
+
   const updateTodo = (item) => {
     // 목록 갱신
     call("/todo", "PUT", item).then((response) => setItems(response.data));
@@ -102,7 +110,12 @@ function App() {
         <div className="TodoList">{todoItems}</div>
       </Container>
       <div>
-        <Button variant="outlined" color="inherit" startIcon={<Delete />}>
+        <Button
+          variant="outlined"
+          color="inherit"
+          startIcon={<Delete />}
+          onClick={deleteListTodo}
+        >
           선택 항목 삭제
         </Button>
       </div>
