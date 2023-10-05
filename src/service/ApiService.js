@@ -78,6 +78,10 @@ export function signout() {
   window.location.href = "/";
 }
 
+export function editProfile() {
+  window.location.href = "/profile";
+}
+
 // 메일로 인증코드 보내기
 export function sendEmail(email) {
   // POST localhost:8080/mail/send

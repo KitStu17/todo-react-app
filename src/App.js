@@ -1,7 +1,7 @@
 import "./App.css";
 import Todo from "./Todo";
 import AddTodo from "./AddTodo";
-import { call, signout } from "./service/ApiService";
+import { call, signout, editProfile } from "./service/ApiService";
 
 import React, { useState, useEffect } from "react";
 import {
@@ -100,6 +100,10 @@ function App() {
             <Typography variant="h6">오늘의 할 일</Typography>
           </Grid>
           <Grid item>
+            <Button color="inherit" onClick={editProfile}>
+              profile
+            </Button>
+
             <Button color="inherit" onClick={signout}>
               logout
             </Button>
