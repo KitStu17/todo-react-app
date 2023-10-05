@@ -20,6 +20,14 @@ function App() {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [checked, setChecked] = useState([]);
+  // DB로부터 받아온 목록을 페이징하기 위한 변수
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(6);
+
+  const indexOfLast = currentPage * itemsPerPage;
+  const indexOfFirst = indexOfLast - itemsPerPage;
+
+  const currentItems = items.slice(indexOfFirst, indexOfLast);
 
   const addTodo = (item) => {
     // 목록 추가
@@ -69,10 +77,10 @@ function App() {
     }
   }, [items]);
 
-  var todoItems = items.length > 0 && (
+  var todoItems = currentItems.length > 0 && (
     <Paper style={{ margin: 16 }}>
       <List>
-        {items.map((item, idx) => (
+        {currentItems.map((item, idx) => (
           <Todo
             item={item}
             key={item.id}
@@ -109,6 +117,21 @@ function App() {
         <AddTodo addTodo={addTodo} />
         <div className="TodoList">{todoItems}</div>
       </Container>
+      <div className="Pagination">
+        {Array.from(
+          { length: Math.ceil(items.length / itemsPerPage) },
+          (value, idx) => (
+            <Button
+              variant="outlined"
+              key={idx + 1}
+              style={{ marginTop: 2, marginBottom: 4 }}
+              onClick={() => setCurrentPage(idx + 1)}
+            >
+              {idx + 1}
+            </Button>
+          )
+        )}
+      </div>
       <div>
         <Button
           variant="outlined"

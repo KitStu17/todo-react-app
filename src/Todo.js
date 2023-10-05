@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   ListItem,
   ListItemText,
@@ -12,6 +12,7 @@ import DeleteOutlined from "@material-ui/icons/DeleteOutlined";
 function Todo(props) {
   const [item, setItem] = useState(props.item);
   const [readOnly, setReadOnly] = useState(true);
+  const [color, setColor] = useState("#ffffff");
 
   const deleteEventHandler = () => {
     props.deleteTodo(item);
@@ -43,10 +44,18 @@ function Todo(props) {
     props.updateTodo(thisItem);
   };
 
+  useEffect(() => {
+    if (item.done) {
+      setColor("#ffecb3");
+    } else {
+      setColor("#ffffff");
+    }
+  }, [item]);
+
   return (
     <ListItem>
       <Checkbox checked={item.done} onChange={checkboxEventHandler} />
-      <ListItemText>
+      <ListItemText style={{ backgroundColor: color }}>
         <InputBase
           inputProps={{ "aria-label": "naked", readOnly: readOnly }}
           type="text"
